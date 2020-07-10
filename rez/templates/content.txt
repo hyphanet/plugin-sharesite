@@ -8,9 +8,9 @@ This is the first section of my site.
 - I love Freenet.
 - Fnord.
 
-h3. Tip: Escape de-anonymization by style-analysis
+h3. Tip: Escape identification by style-analysis
 
 - Write short sentences.
 - Avoid special words (like "sophisticated" or "de-anonymization"). Except if all others use them, too.
 - Copy the style of others. Even if it is different from the tips here.
-- Have an "official" site in Freenet where you can talk about daily life. That content would always de-anonymize your anonymous sites. Do not adhere to these style rules there.
+- Have an "official" site in Freenet where you can talk about daily life. That content would always link your pseudonymous sites to you. Do not adhere to these style rules there.

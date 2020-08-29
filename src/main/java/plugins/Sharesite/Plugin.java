@@ -39,7 +39,6 @@ public class Plugin implements FredPlugin, FredPluginVersioned, FredPluginRealVe
 
 	public Plugin() {
 		instance = this;
-		setLanguage(LANGUAGE.ENGLISH);
 	}
 
 	@Override

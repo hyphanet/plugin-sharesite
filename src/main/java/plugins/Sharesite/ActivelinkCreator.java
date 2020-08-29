@@ -15,7 +15,7 @@ import java.io.*;
 public class ActivelinkCreator {
 	public static BufferedImage create(String name) throws IOException {
 		String str=name.substring(0,Math.min(18,name.length()));
-		InputStream is = Plugin.class.getClassLoader().getResourceAsStream("/templates/activelink.png");
+		InputStream is = Plugin.class.getClassLoader().getResourceAsStream("resources/templates/activelink.png");
 		BufferedImage bg = ImageIO.read(is);
 		BufferedImage out = new BufferedImage(108, 36, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D ogr = out.createGraphics();

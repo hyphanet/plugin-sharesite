@@ -22,9 +22,14 @@ repositories {
     jcenter()
 }
 
+configurations {
+    extraLibs
+}
+
 dependencies {
-    implementation group: 'net.java', name: 'textile-j', version: '2.2'
     implementation group: 'org.freenetproject', name: 'fred', version: 'build+'
+    extraLibs group: 'net.java', name: 'textile-j', version: '2.2'
+    configurations.compile.extendsFrom(configurations.extraLibs)
 }
 
 dependencyVerification {
@@ -48,6 +53,10 @@ jar {
                    'Built-By': System.getProperty('user.name'),
                    'Built-Date': getMTime("src/main/java/plugins/Sharesite/Plugin.java"),
                    'Built-JDK': System.getProperty('java.version')
+    }
+
+    from {
+        configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
     }
 
     from("src/main/java") {

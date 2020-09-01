@@ -33,7 +33,9 @@ dependencies {
 }
 
 dependencyVerification {
-    verify = []
+    verify = [
+        'net.java:textile-j:e984944776943f1846543d93cdf2feefb266225a567f46ab665a672c79e52418',
+    ]
 }
 
 import java.nio.file.Files;

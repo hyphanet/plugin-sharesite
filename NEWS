@@ -1,6 +1,10 @@
 master:
 -
 
+Sharesite 0.4.8:
+- beautiful default style + example for header image using the activelink
+- replace 'de-anonymization' by 'link pseudonymous site to you'
+
 Sharesite 0.4.7:
 - avoid more blocking by using a ticker, thanks to TheSeeker!
   (pull-request https://github.com/ArneBab/plugin-sharesite/pull/3)

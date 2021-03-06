@@ -1,0 +1,120 @@
+buildscript {
+    dependencies {
+        classpath files('gradle/gradle-witness.jar')
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'witness'
+apply plugin: 'maven-publish'
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+version = "0.4.7"
+
+repositories {
+    mavenLocal()
+    maven { url "http://4thline.org/m2" }
+    maven { url 'https://mvn.freenetproject.org' }
+    jcenter()
+}
+
+configurations {
+    extraLibs
+}
+
+dependencies {
+    implementation group: 'org.freenetproject', name: 'fred', version: 'build+'
+    extraLibs group: 'net.java', name: 'textile-j', version: '2.2'
+    configurations.compile.extendsFrom(configurations.extraLibs)
+}
+
+dependencyVerification {
+    verify = [
+        'net.java:textile-j:e984944776943f1846543d93cdf2feefb266225a567f46ab665a672c79e52418',
+    ]
+}
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+
+Date getMTime(String file) {
+	return new Date(Files.readAttributes(Paths.get(file), BasicFileAttributes.class).lastModifiedTime().toMillis());
+}
+
+jar {
+    manifest {
+        attributes 'Plugin-Main-Class': 'plugins.Sharesite.Plugin',
+                   'Required-Node-Version': '1472',
+                   'Implementation-Version': version,
+                   'Built-By': System.getProperty('user.name'),
+                   'Built-Date': getMTime("src/main/java/plugins/Sharesite/Plugin.java"),
+                   'Built-JDK': System.getProperty('java.version')
+    }
+
+    from {
+        configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    from("src/main/java") {
+        include "**/*.l10n"
+        include "**/*.png"
+        include "**/*.txt"
+        include "**/*.html"
+        include "**/*.css"
+    }
+
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+    duplicatesStrategy = "exclude"
+    archiveName = 'freenet-Sharesite.jar'
+}
+
+def jars = []
+gradle.addListener(new TaskExecutionListener() {
+void afterExecute(Task task, TaskState state) {
+    if(task in AbstractArchiveTask) {
+        jars << task.outputs.files.singleFile
+    }
+}
+
+void beforeExecute(Task task) { }
+})
+gradle.addBuildListener(new BuildAdapter() {
+    void buildFinished(BuildResult result) {
+        if(jars) {
+            def hash = {
+                File file -> def sha256 = java.security.MessageDigest.getInstance('SHA-256')
+                file.eachByte(1024 * 4) { buffer, len -> sha256.update(buffer, 0, len) }
+                println "SHA-256 of ${file.name}: ${sha256.digest().encodeHex().toString()}"
+            }
+
+            jars.each { hash(it) }
+        }
+    }
+})
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId 'org.freenetproject.plugins'
+            artifactId "Sharesite"
+            version version
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url "s3://mvn.freenetproject.org/"
+            credentials(AwsCredentials) {
+                accessKey System.getenv('AWS_ACCESS_KEY_ID')
+                secretKey System.getenv('AWS_SECRET_ACCESS_KEY')
+            }
+        }
+    }
+}

@@ -2,8 +2,8 @@ package plugins.Sharesite.common;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * A HashMap with intelligence!
@@ -33,6 +33,10 @@ public class SmartMap {
 		map.put(key, Integer.toString(value));
 	}
 	
+	public void putbool(String key, boolean value) {
+		map.put(key, Boolean.toString(value));
+	}
+
 	public void putintary(String key, ArrayList<Integer> array) {
 		String str = "";
 		if (array.size() > 0) {
@@ -63,6 +67,12 @@ public class SmartMap {
 		return (int)getlong(key, defval);
 	}
 	
+	public boolean getbool(String key, boolean defval) {
+		String str = map.get(key);
+		if (str == null) return defval;
+		return Boolean.parseBoolean(str);
+	}
+
 	public ArrayList<Integer> getintary(String key, ArrayList<Integer> defary) {
 		String str = map.get(key);
 		if (str == null) return defary;

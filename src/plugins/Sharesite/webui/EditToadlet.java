@@ -1,17 +1,15 @@
 package plugins.Sharesite.webui;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URI;
 import java.util.Calendar;
-import java.util.TimeZone;
 import java.util.Locale;
-import java.util.regex.Pattern;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
-import java.io.BufferedReader;
-import java.io.StringReader;
+import java.util.regex.Pattern;
 
-import plugins.Sharesite.Freesite;
-import plugins.Sharesite.Plugin;
 import freenet.clients.http.InfoboxNode;
 import freenet.clients.http.PageMaker;
 import freenet.clients.http.PageNode;
@@ -22,6 +20,8 @@ import freenet.l10n.BaseL10n;
 import freenet.pluginmanager.PluginRespirator;
 import freenet.support.HTMLNode;
 import freenet.support.api.HTTPRequest;
+import plugins.Sharesite.Freesite;
+import plugins.Sharesite.Plugin;
 
 public class EditToadlet extends Toadlet {
 	private PluginRespirator pr;
@@ -60,13 +60,24 @@ public class EditToadlet extends Toadlet {
 		PageNode pageNode = pageMaker.getPageNode(l10n.getString("Sharesite.Menu.Name"), ctx);
 		HTMLNode editForm = pr.addFormChild(pageNode.content,"/Sharesite/Edit/" + siteId, "editForm");
 		String hour = Integer.toString(c.getInsertHour());
-		addNodes(editForm,c.getName(),c.getPath(),c.getDescription(),c.getText(),c.getCSS(), c.getActivelinkUri(),c.getRequestSSK(),c.getInsertSSK(),hour);
+		addNodes(editForm,c.getName(),c.getPath(),c.getDescription(),c.isPastebin(),c.getText(),c.getCSS(), c.getActivelinkUri(),c.getRequestSSK(),c.getInsertSSK(),hour);
 		String ret = pageNode.outer.generate();
 		writeHTMLReply(ctx, 200, "OK", ret);
 	}
 
 
-	private void addNodes( HTMLNode form, String name, String path, String desc, String text, String css, String aUri, String rkey, String ikey, String hour) {
+	private void addNodes(
+			HTMLNode form,
+			String name,
+			String path,
+			String desc,
+			boolean pastebin,
+			String text,
+			String css,
+			String aUri,
+			String rkey,
+			String ikey,
+			String hour) {
 		String[] attrs;
 		String[] vals;
 
@@ -137,6 +148,14 @@ public class EditToadlet extends Toadlet {
 				.get(Calendar.HOUR_OF_DAY); // 0-23
 		insertHour.addChild("span",l10n.getString("Sharesite.Edit.InsertHourDescription",
 							  "utchour", Integer.toString(currentHour)));
+
+		HTMLNode pastebinNode = editBox.content.addChild("p");
+		attrs = pastebin ? new String[] { "type", "name", "checked" } : new String[] { "type", "name" };
+		vals = pastebin ? new String[] { "checkbox", "pastebinInput", "true" } : new String[] { "checkbox", "pastebinInput" };
+		pastebinNode.addChild("input", attrs, vals);
+		pastebinNode.addChild("span",l10n.getString("Sharesite.Edit.Pastebin"));
+		// need special handling for attrs, because for checkboxes the presence of the checkbox attribute decides the checked state
+		pastebinNode.addChild("span",l10n.getString("Sharesite.Edit.PastebinDescription"));
 
 		// Syntax
 		HTMLNode syntaxHelpNode = editBox.content.addChild("p",l10n.getString("Sharesite.Edit.TextSyntax"));
@@ -289,6 +308,7 @@ public class EditToadlet extends Toadlet {
 			String ikey= req.getPartAsStringFailsafe("insertKeyInput", 1000).trim();
 			String rkey= req.getPartAsStringFailsafe("requestKeyInput", 1000).trim();
 			String hour= req.getPartAsStringFailsafe("insertHourInput", 1000).trim();
+			String pastebin= req.getPartAsStringFailsafe("pastebinInput", 1000).trim();
 
 			Plugin.instance.logger.putstr("POST values:");
 			Plugin.instance.logger.putstr("   name=\""+name+"\"");
@@ -300,6 +320,7 @@ public class EditToadlet extends Toadlet {
 			Plugin.instance.logger.putstr("   ikey=\""+ikey+"\"");
 			Plugin.instance.logger.putstr("   rkey=\""+rkey+"\"");
 			Plugin.instance.logger.putstr("  hour=\""+hour+"\"");
+			Plugin.instance.logger.putstr("  pastebin=\""+pastebin+"\"");
 
 			Plugin.instance.logger.putstr("/ in paths breaks preview and insert. URL-encoding it as %2F");
 			path = path.replace("/", "%2F"); // url encoding
@@ -361,6 +382,13 @@ public class EditToadlet extends Toadlet {
 					Plugin.instance.logger.putstr("insertHour changed!");
 					changed = true;
 				}
+			}
+
+			Boolean isPastebin = "on".equals(pastebin); // null means off
+			if (!isPastebin.equals(c.isPastebin())) {
+				c.setPastebin(isPastebin);
+				Plugin.instance.logger.putstr("pastebin changed!");
+				changed = true;
 			}
 
 			if (changed) {

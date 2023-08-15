@@ -1,22 +1,24 @@
 package plugins.Sharesite;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-import net.java.textilej.parser.MarkupParser;
-import net.java.textilej.parser.markup.textile.TextileDialect;
-import net.java.textilej.parser.builder.HtmlDocumentBuilder;
-import plugins.Sharesite.common.SmartMap;
 import freenet.client.HighLevelSimpleClient;
 import freenet.keys.FreenetURI;
-import java.io.*;
+import net.java.textilej.parser.MarkupParser;
+import net.java.textilej.parser.builder.HtmlDocumentBuilder;
+import net.java.textilej.parser.markup.textile.TextileDialect;
+import plugins.Sharesite.common.SmartMap;
 
 /**
  * This is the freesite. Besides containing the actual configuration
@@ -33,6 +35,7 @@ public class Freesite implements Comparable<Freesite> {
 	private String path;
 	private Integer insertHour;
 	private String description;
+	private boolean pastebin;
 	private String text;
 	private String css;
 	private String activelinkUri;
@@ -55,6 +58,7 @@ public class Freesite implements Comparable<Freesite> {
 		insertHour = r.nextInt(24);
 		description = "Write a short description shown in search results here.";
 		activelinkUri = "";
+		pastebin = false;
 
 		String csstemplate = "/templates/style.css";
 		String texttemplate = "/templates/content.txt";
@@ -156,12 +160,20 @@ public class Freesite implements Comparable<Freesite> {
 		this.text = text;
 	}
 
+	public synchronized boolean isPastebin() {
+		return pastebin;
+	}
+
+	public synchronized void setPastebin(boolean pastebin) {
+		this.pastebin = pastebin;
+	}
+
 	public int getUniqueKey() {
 		return uniqueKey;
 	}
 
 	public synchronized void setInsertSSK(String key) {
-		this.insertSSK=key;
+		this.insertSSK = key;
 	}
 
 	public synchronized void setRequestSSK(String key) {
@@ -228,7 +240,7 @@ public class Freesite implements Comparable<Freesite> {
 		// Prepare content
 		//Plugin.instance.logger.putstr("textToHTML:\n=============");
 		String descriptionHTML = textToHTML(description);
-		String content = textToHTML(text);
+		String content = isPastebin() ? "<pre><code>" + escapeHtmlEntities(text) + "</code></pre>" : textToHTML(text);
 		//Plugin.instance.logger.putstr("==============");
 
 		// Generate URIs we need
@@ -270,6 +282,15 @@ public class Freesite implements Comparable<Freesite> {
 
 		reader.close();
 		return sb.toString();
+	}
+
+	private static String escapeHtmlEntities(String text) {
+		return text // see https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html
+				.replaceAll("&", "&amp;")
+				.replaceAll("<", "&lt;")
+				.replaceAll(">", "&gt;")
+				.replaceAll("\"", "&quot;")
+				.replaceAll("'", "&#x27");
 	}
 
 	public synchronized void setCSS(String css) {
@@ -314,6 +335,7 @@ public class Freesite implements Comparable<Freesite> {
 		map.putstr(prefix + "path", path);
 		map.putint(prefix + "insertHour", insertHour);
 		map.putstr(prefix + "description", description);
+		map.putbool(prefix + "pastebin", pastebin);
 		map.putstr(prefix + "text", text);
 		map.putstr(prefix + "css", css);
 		map.putstr(prefix + "activelinkUri", activelinkUri);
@@ -337,6 +359,7 @@ public class Freesite implements Comparable<Freesite> {
 		// to avoid changing behavior of old sites, keep insertHour as -1
 		insertHour = map.getint(prefix + "insertHour", -1);
 		description = map.getstr(prefix + "description", description);
+		pastebin = map.getbool(prefix + "pastebin", pastebin);
 		text = map.getstr(prefix + "text", text);
 		css = map.getstr(prefix + "css", css);
 		activelinkUri = map.getstr(prefix + "activelinkUri", activelinkUri);

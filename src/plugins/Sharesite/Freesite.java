@@ -375,6 +375,10 @@ public class Freesite implements Comparable<Freesite> {
 	private static String textToHTML(String text) {
 
 		String html="";
+        // Hack: replace a leading space by a non-breaking space to avoid left-stripping of the text. This allows starting text with HTML-tags.
+        if (text.startsWith(" ")) {
+            text = " " + text.substring(1);
+        }
 
 		try {
 			StringWriter writer = new StringWriter();

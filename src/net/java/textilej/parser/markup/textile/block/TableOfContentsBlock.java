@@ -18,7 +18,7 @@ public class TableOfContentsBlock extends Block {
 
 	private String style = "none";
 	private int maxLevel = Integer.MAX_VALUE;
-
+    private String cssClass = null;
 	
 	private Matcher matcher;
 	
@@ -39,8 +39,10 @@ public class TableOfContentsBlock extends Block {
 						String key = keyValue[0].trim();
 						String value = keyValue[1].trim();
 						
-						if (key.equals("style")) {
-							setStyle(value);
+                        if (key.equals("style")) {
+                            setStyle(value);
+                        } else if (key.equals("class")) {
+							setCssClass(value);
 						} else if (key.equals("maxLevel")) {
 							try {
 								maxLevel = Integer.parseInt(value);
@@ -68,7 +70,7 @@ public class TableOfContentsBlock extends Block {
 		}
 		Attributes nullAttributes = new Attributes();
 		
-		builder.beginBlock(BlockType.NUMERIC_LIST, new Attributes(null,null,"list-style: "+style+";",null));
+		builder.beginBlock(BlockType.NUMERIC_LIST, new Attributes(null,cssClass,"list-style: "+style+";",null));
 		for (OutlineItem child: item.getChildren()) {
 			builder.beginBlock(BlockType.LIST_ITEM, nullAttributes);
 			builder.link('#'+child.getId(), child.getLabel());
@@ -105,6 +107,9 @@ public class TableOfContentsBlock extends Block {
 		this.maxLevel = maxLevel;
 	}
 
+	public void setCssClass(String cssClass) {
+		this.cssClass = cssClass;
+	}
 
 
 }

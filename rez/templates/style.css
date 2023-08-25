@@ -44,6 +44,7 @@ pre code {
   margin: 0;
   padding: 20px 30px 20px 0;
   background-color: #b2ac9f;
+  font-weight: bold;
 }
 #site-contents>ol[style="list-style: none;"]>li {
   margin-bottom:15px;

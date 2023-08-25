@@ -1,10 +1,8 @@
 package plugins.Sharesite;
 
-import plugins.Sharesite.common.Logger;
-import plugins.Sharesite.webui.WebInterface;
 import freenet.l10n.BaseL10n;
-import freenet.l10n.PluginL10n;
 import freenet.l10n.BaseL10n.LANGUAGE;
+import freenet.l10n.PluginL10n;
 import freenet.pluginmanager.FredPlugin;
 import freenet.pluginmanager.FredPluginBaseL10n;
 import freenet.pluginmanager.FredPluginL10n;
@@ -13,8 +11,8 @@ import freenet.pluginmanager.FredPluginThreadless;
 import freenet.pluginmanager.FredPluginVersioned;
 import freenet.pluginmanager.PluginRespirator;
 import freenet.support.Ticker;
-
-import java.awt.GraphicsEnvironment;
+import plugins.Sharesite.common.Logger;
+import plugins.Sharesite.webui.WebInterface;
 
 /**
  * This is the main class, the first one executed by Freenet.

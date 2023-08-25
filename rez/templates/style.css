@@ -28,6 +28,11 @@ pre code {
 #site-header-sep {
   display:none;
 }
+#site-header {
+	background-image: url("activelink.png");
+	background-position: right top;
+	background-repeat: no-repeat;
+}
 #site-contents {
   position:relative;
 }

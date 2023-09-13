@@ -8,9 +8,13 @@ This is the first section of my site.
 - I love Freenet / Hyphanet.
 - Fnord.
 
+@2023-09@
+
 h3. Tip: Escape identification by style-analysis
 
 - Write short sentences.
 - Copy the style of others. Even if it is different from the tips here.
 - Avoid special words (like "sophisticated" or "de-anonymization"). Except if all others use them, too.
 - Have an "official" site in Freenet / Hyphanet, separate from your pseudonymous sites. There you can talk about daily life. That content would always link your pseudonymous sites to you. Do not adhere to these style rules there.
+
+@2023-09@

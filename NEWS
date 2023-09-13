@@ -1,5 +1,9 @@
 master:
--
+Sharesite 0.5.0
+- Switch default theme to Night Garden by ChampiZen
+
+Sharesite 0.4.9:
+- enable using {toc:class=theClass} to add a class to the list elemets in the toc.
 
 Sharesite 0.4.8:
 - beautiful default style + example for header image using the activelink

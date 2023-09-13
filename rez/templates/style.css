@@ -6,15 +6,15 @@ body {
   margin:-30px auto -30px 15%;
   background-color:#2c2820;
   color: #adadad;
-  padding:30px 0;
+  padding:30px 60px 0 0;
   font-family: sans-serif;
-  box-shadow: 10px 0 5px 0px rgba(159,165,178,0.3);
+  box-shadow: 10px 0 5px 0 rgba(159,165,178,0.3);
 }
 body>div{
-  padding: 0 30px;
   background-color:#000;
   display:table;
   width:100%;
+  padding:0 30px 0 30px;
 }
 a{
   color:#9eba2f;

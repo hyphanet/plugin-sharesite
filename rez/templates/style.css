@@ -4,67 +4,66 @@ body {
   text-align: left;
   line-height: 1.4em; 
   margin:-30px auto -30px 15%;
-  background-color:#dfdbd3;
-  color: #525252;
+  background-color:#2c2820;
+  color: #adadad;
   padding:30px 0;
   font-family: sans-serif;
-  box-shadow: 10px 0 5px 0px rgba(178,172,159,0.3);
+  box-shadow: 10px 0 5px 0px rgba(159,165,178,0.3);
 }
-body>div {
+body>div{
   padding: 0 30px;
-  background-color:#fff;
+  background-color:#000;
   display:table;
   width:100%;
 }
-a {
-  color:#B4D044;
+a{
+  color:#9eba2f;
 }
-pre code {
+pre code{
   display:table;
   padding:15px;
   background-color:#000;
   color:#fff;
+  border:1px solid #9eba2f;
 }
-#site-header-sep {
+#site-header-sep{
   display:none;
-}
-#site-header {
-	background-image: url("activelink.png");
-	background-position: right top;
-	background-repeat: no-repeat;
 }
 #site-contents {
   position:relative;
 }
-#site-contents>ol[style="list-style: none;"] {
-  position: absolute;
+#site-contents>ol.toc{
   top: 0;
   left: 100%;
-  width:30%;
-  margin: 0;
-  padding: 20px 30px 20px 0;
-  background-color: #b2ac9f;
-  font-weight: bold;
+  width:26%;
+  position: absolute;
+  background-color: #605a4d;
 }
-#site-contents>ol[style="list-style: none;"]>li {
+#site-contents>ol.toc {
+  padding: 20px 30px 20px 0;
+  display:table;
+  margin: 0;
+}
+#site-contents>ol.toc > li {
   margin-bottom:15px;
 }
-#site-contents>ol[style="list-style: none;"]>li a {
+#site-contents>ol.toc > li a{
   display:block;
   text-decoration:none;
 }
-#site-contents>ol[style="list-style: none;"]>li>a {
-  background-color: #4d4d4d;
-  color: #fff;
+#site-contents>ol.toc > li > a {
+  background-color: #b2b2b2;
+  color: #000;
   padding: 5px 15px;
   text-transform: uppercase;
 }
-#site-contents>ol[style="list-style: none;"]>li>ol {
+#site-contents>ol.toc > li > ol {
   margin: 10px 0 10px 15px;
   padding: 0;
 }
-#site-contents>ol[style="list-style: none;"]>li>ol a {
-  color: #4d4d4d;
+#site-contents>ol.toc > li > ol a{
+  color: #b2b2b2;
+  font-width: bold;
   padding: 8px 0 3px;
-  border-bottom:1px solid #fff;
+  border-bottom:1px solid #000;
 }

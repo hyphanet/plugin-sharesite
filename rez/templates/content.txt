@@ -1,4 +1,4 @@
-{toc}
+{toc:class=toc}
 
 h2. Hello Freenet / Hyphanet!
 

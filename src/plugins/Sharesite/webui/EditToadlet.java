@@ -158,7 +158,8 @@ public class EditToadlet extends Toadlet {
 		pastebinNode.addChild("span",l10n.getString("Sharesite.Edit.PastebinDescription"));
 
 		// Syntax
-		HTMLNode syntaxHelpNode = editBox.content.addChild("p",l10n.getString("Sharesite.Edit.TextSyntax"));
+		HTMLNode syntaxHelpNode = editBox.content.addChild("p");
+        l10n.addL10nSubstitution(syntaxHelpNode, "Sharesite.Edit.TextSyntax", new String[] {"link"}, new HTMLNode[] { HTMLNode.link("/USK@0p2QDYf3s6KDrcz6nZZaNPn-lnqHWPWN2CeOUfGslUs,DyfKUYXP1z1j9V2ia3GbEFXA8PHRR3Jo1F8WH4Df0Xg,AQACAAE/sharesite-textile-reference-guide/19/") });
 		HTMLNode syntaxTable = syntaxHelpNode.addChild("table");
 		
 		HTMLNode syntaxHelp = syntaxTable.addChild("tr");

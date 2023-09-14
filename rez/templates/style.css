@@ -10,6 +10,7 @@ body {
   padding:30px 60px 0 0;
   font-family: sans-serif;
   box-shadow: 10px 0 5px 0 rgba(159,165,178,0.3);
+  word-wrap: anywhere;
 }
 body>div{
   background-color:#000;

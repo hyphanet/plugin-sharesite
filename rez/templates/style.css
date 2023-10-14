@@ -21,12 +21,17 @@ body>div{
 a{
   color:#9eba2f;
 }
+pre {
+  max-width: 500px;
+  overflow: scroll;
+  border:1px solid #9eba2f;
+  white-space: pre-wrap;
+}
 pre code{
   display:table;
   padding:15px;
   background-color:#000;
   color:#fff;
-  border:1px solid #9eba2f;
 }
 #site-header-sep{
   display:none;
